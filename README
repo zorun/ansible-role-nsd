@@ -24,6 +24,8 @@ Put key-value pairs in host_vars, under the key "nsd_local_config".
 If you want to pass multiple values for a key (e.g. ip-address), just use
 a list as value, it will automatically be expanded.
 
+The zones are configured in group_vars, see the example.  The zone files
+themselves for primary zones should be put in files/nsd.
 
 The playbook is currently only tested with Debian wheezy.
 
