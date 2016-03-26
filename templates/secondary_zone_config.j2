@@ -1,9 +1,23 @@
 # Secondary zone definition for {{ item.zone_name }}
+
+{% for master in item.masters %}
+{% if master.tsig_secret is defined %}
+key:
+    name: "{{ item.zone_name }}_{{ master.ip }}"
+    algorithm: "{{ master.tsig_algorithm }}"
+    secret: "{{ master.tsig_secret }}"
+{% endif %}
+{% endfor %}
+
+{%- macro tsigkey(master) %}
+{% if master.tsig_secret is defined %}{{ item.zone_name }}_{{ master.ip }}{% else %}NOKEY{% endif %}
+{% endmacro -%}
+
 zone:
   name: "{{ item.zone_name }}"
   zonefile: "{{ secondary_zones_dir }}/{{ item.zone_name }}"
 {% for master in item.masters %}
-  allow-notify: {{ master.ip }} NOKEY
-  request-xfr: AXFR {{ master.ip }} NOKEY
+  allow-notify: {{ master.ip }} "{{ tsigkey(master) }}"
+  request-xfr: AXFR {{ master.ip }} "{{ tsigkey(master) }}"
 {% endfor %}
 

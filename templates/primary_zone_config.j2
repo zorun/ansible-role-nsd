@@ -1,9 +1,23 @@
 # Primary zone definition for {{ item.zone_name }}
+
+{% for slave in item.slaves %}
+{% if slave.tsig_secret is defined %}
+key:
+    name: "{{ item.zone_name }}_{{ slave.ip }}"
+    algorithm: "{{ slave.tsig_algorithm }}"
+    secret: "{{ slave.tsig_secret }}"
+{% endif %}
+{% endfor %}
+
+{%- macro tsigkey(slave) %}
+{% if slave.tsig_secret is defined %}{{ item.zone_name }}_{{ slave.ip }}{% else %}NOKEY{% endif %}
+{% endmacro -%}
+
 zone:
   name: "{{ item.zone_name }}"
   zonefile: "{{ primary_zones_dir }}/{{ item.zone_filename }}"
 {% for slave in item.slaves %}
-  notify: {{ slave.ip }} NOKEY
-  provide-xfr: {{ slave.ip }} NOKEY
+  notify: {{ slave.ip }} "{{ tsigkey(slave) }}"
+  provide-xfr: {{ slave.ip }} "{{ tsigkey(slave) }}"
 {% endfor %}
 
