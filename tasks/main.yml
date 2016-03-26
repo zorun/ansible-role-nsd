@@ -18,6 +18,9 @@
 - name: Create secondary zone directory
   file: path={{ secondary_zones_dir }} state=directory owner=nsd group=nsd mode=0755
 
+- name: Create keys directory
+  file: path={{ keys_config_dir }} state=directory owner=root group=root mode=0755
+
 
 # Unfortunately, nsd doesn't allow to say "include all files in this directory".
 # The following implements the inclusion logic: the main config file includes
@@ -61,5 +64,22 @@
     regexp: "^include: {{ zones_config_dir }}/{{ item.zone_name }}.secondary.conf"
     line: "include: {{ zones_config_dir }}/{{ item.zone_name }}.secondary.conf"
   with_items: "{{ nsd_secondary_zones }}"
+  notify:
+    - restart nsd3
+
+
+- name: Configure TSIG keys
+  template: src=tsigkey_config.j2 dest="{{ keys_config_dir }}/{{ item.tsig_keyname }}.conf" owner=root group=root mode=0644
+  notify:
+    - restart nsd3
+  with_items: "{{ nsd_tsig_keys }}"
+
+- name: Add include lines for TSIG keys
+  lineinfile:
+    state: present
+    dest: "{{ zones_include_file }}"
+    regexp: "^include: {{ keys_config_dir }}/{{ item.tsig_keyname }}.conf"
+    line: "include: {{ keys_config_dir }}/{{ item.tsig_keyname }}.conf"
+  with_items: "{{ nsd_tsig_keys }}"
   notify:
     - restart nsd3
