@@ -1,10 +1,10 @@
 ---
 
-- name: restart nsd3
-  service: name=nsd3 state=restarted
-
 - name: rebuild nsd3 database
   command: /usr/sbin/nsdc rebuild
+
+- name: restart nsd3
+  service: name=nsd3 state=restarted
 
 - name: notify slaves
   command: /usr/sbin/nsdc notify
