@@ -1,0 +1,9 @@
+# Primary zone definition for {{ item.zone_name }}
+zone:
+  name: "{{ item.zone_name }}"
+  zonefile: "{{ primary_zones_dir }}/{{ item.zone_filename }}"
+{% for slave in item.slaves %}
+  notify: {{ slave.ip }} NOKEY
+  provide-xfr: {{ slave.ip }} NOKEY
+{% endfor %}
+

@@ -1,0 +1,9 @@
+# Secondary zone definition for {{ item.zone_name }}
+zone:
+  name: "{{ item.zone_name }}"
+  zonefile: "{{ secondary_zones_dir }}/{{ item.zone_name }}"
+{% for master in item.masters %}
+  allow-notify: {{ master.ip }} NOKEY
+  request-xfr: AXFR {{ master.ip }} NOKEY
+{% endfor %}
+
