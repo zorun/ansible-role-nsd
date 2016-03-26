@@ -49,6 +49,7 @@
   with_items: "{{ nsd_primary_zones }}"
   notify:
     - rebuild nsd3 database
+    - notify slaves
 
 
 - name: Configure secondary nsd3 zones

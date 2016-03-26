@@ -5,3 +5,6 @@
 
 - name: rebuild nsd3 database
   command: /usr/sbin/nsdc rebuild
+
+- name: notify slaves
+  command: /usr/sbin/nsdc notify
