@@ -1,6 +1,6 @@
 # Secondary zone definition for {{ item.zone_name }}
 
-{% for master in item.masters %}
+{% for master in item.masters|default([]) %}
 {% if master.tsig_secret is defined %}
 key:
     name: "{{ item.zone_name }}_{{ master.ip }}"
@@ -16,7 +16,7 @@ key:
 zone:
   name: "{{ item.zone_name }}"
   zonefile: "{{ secondary_zones_dir }}/{{ item.zone_name }}"
-{% for master in item.masters %}
+{% for master in item.masters|default([]) %}
   allow-notify: {{ master.ip }} "{{ tsigkey(master) }}"
   request-xfr: AXFR {{ master.ip }} "{{ tsigkey(master) }}"
 {% endfor %}
