@@ -20,7 +20,7 @@
   template: src=zones_config.j2 dest={{ zones_config_file }} owner=root group=root mode=0644
   notify:
     - rebuild nsd3 database
-    - restart nsd3
+    - reload nsd3 database
 
 
 - name: Copy content of primary nsd3 zones
@@ -28,4 +28,5 @@
   with_items: "{{ nsd_primary_zones }}"
   notify:
     - rebuild nsd3 database
+    - reload nsd3 database
     - notify slaves
