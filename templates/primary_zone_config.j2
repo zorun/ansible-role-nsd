@@ -1,9 +1,0 @@
-# Primary zone definition for {{ item.zone_name }}
-zone:
-  name: "{{ item.zone_name }}"
-  zonefile: "{{ primary_zones_dir }}/{{ item.zone_filename }}"
-{% for slave in item.slaves|default([]) %}
-  notify: {{ slave.ip }} "{{ slave.tsig_key|default('NOKEY') }}"
-  provide-xfr: {{ slave.ip }} "{{ slave.tsig_key|default('NOKEY') }}"
-{% endfor %}
-

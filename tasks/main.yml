@@ -3,14 +3,6 @@
 - name: Install nsd3
   apt: pkg=nsd3 state=present
 
-- name: Configure nsd3
-  template: src=config.j2 dest={{ nsd_config_dir }}/nsd.conf owner=root group=root mode=0644
-  notify:
-    - restart nsd3
-
-
-- name: Create zone configuration directory
-  file: path={{ zones_config_dir }} state=directory owner=root group=root mode=0755
 
 - name: Create primary zone directory
   file: path={{ primary_zones_dir }} state=directory owner=root group=root mode=0755
@@ -18,69 +10,22 @@
 - name: Create secondary zone directory
   file: path={{ secondary_zones_dir }} state=directory owner=nsd group=nsd mode=0755
 
-- name: Create keys directory
-  file: path={{ keys_config_dir }} state=directory owner=root group=root mode=0755
 
-
-# Unfortunately, nsd doesn't allow to say "include all files in this directory".
-# The following implements the inclusion logic: the main config file includes
-# a secondary file, in which we add include statements for each zone.
-- name: Wipe include file
-  copy: dest={{ zones_include_file }} content="# Generated automatically by Ansible, do not edit by hand.\n"
-
-- name: Configure primary nsd3 zones
-  template: src=primary_zone_config.j2 dest="{{ zones_config_dir }}/{{ item.zone_name }}.primary.conf" owner=root group=root mode=0644
-  notify:
-    - restart nsd3
-  with_items: "{{ nsd_primary_zones }}"
-
-- name: Add include lines for primary zones to the include file
-  lineinfile:
-    state: present
-    dest: "{{ zones_include_file }}"
-    regexp: "^include: {{ zones_config_dir }}/{{ item.zone_name }}.primary.conf"
-    line: "include: {{ zones_config_dir }}/{{ item.zone_name }}.primary.conf"
-  with_items: "{{ nsd_primary_zones }}"
+- name: Create base nsd3 configuration file
+  template: src=config.j2 dest={{ nsd_config_dir }}/nsd.conf owner=root group=root mode=0644
   notify:
     - restart nsd3
 
-- name: Copy primary nsd3 zones
+- name: Configure nsd3 zones
+  template: src=zones_config.j2 dest={{ zones_config_file }} owner=root group=root mode=0644
+  notify:
+    - rebuild nsd3 database
+    - restart nsd3
+
+
+- name: Copy content of primary nsd3 zones
   copy: src="files/nsd/{{ item.zone_filename }}" dest="{{ primary_zones_dir }}/{{ item.zone_filename }}" owner=root group=root mode=0644
   with_items: "{{ nsd_primary_zones }}"
   notify:
     - rebuild nsd3 database
     - notify slaves
-
-
-- name: Configure secondary nsd3 zones
-  template: src=secondary_zone_config.j2 dest="{{ zones_config_dir }}/{{ item.zone_name }}.secondary.conf" owner=root group=root mode=0644
-  notify:
-    - restart nsd3
-  with_items: "{{ nsd_secondary_zones }}"
-
-- name: Add include lines for secondary zones to the include file
-  lineinfile:
-    state: present
-    dest: "{{ zones_include_file }}"
-    regexp: "^include: {{ zones_config_dir }}/{{ item.zone_name }}.secondary.conf"
-    line: "include: {{ zones_config_dir }}/{{ item.zone_name }}.secondary.conf"
-  with_items: "{{ nsd_secondary_zones }}"
-  notify:
-    - restart nsd3
-
-
-- name: Configure TSIG keys
-  template: src=tsigkey_config.j2 dest="{{ keys_config_dir }}/{{ item.tsig_keyname }}.conf" owner=root group=root mode=0644
-  notify:
-    - restart nsd3
-  with_items: "{{ nsd_tsig_keys }}"
-
-- name: Add include lines for TSIG keys
-  lineinfile:
-    state: present
-    dest: "{{ zones_include_file }}"
-    regexp: "^include: {{ keys_config_dir }}/{{ item.tsig_keyname }}.conf"
-    line: "include: {{ keys_config_dir }}/{{ item.tsig_keyname }}.conf"
-  with_items: "{{ nsd_tsig_keys }}"
-  notify:
-    - restart nsd3
