@@ -2,6 +2,7 @@
 # Do not edit by hand!
 
 server:
+{% if nsd_common_config is defined %}
   # Common configuration
 {% for key, value in nsd_common_config.iteritems() %}
 {% if value is string or value is number %}
@@ -12,7 +13,9 @@ server:
 {% endfor %}
 {% endif %}
 {% endfor %}
+{% endif %}
 
+{% if nsd_local_config is defined %}
   # Local configuration
 {% for key, value in nsd_local_config.iteritems() %}
 {% if value is string or value is number %}
@@ -23,6 +26,7 @@ server:
 {% endfor %}
 {% endif %}
 {% endfor %}
+{% endif %}
 
 
 # Include zone definitions
