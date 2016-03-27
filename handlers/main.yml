@@ -1,5 +1,9 @@
 ---
 
+# Note: the order is very important here.  When a zone is added or removed,
+# nsd MUST rebuild its database before being restarted.  Otherwise, it will
+# fail to start.
+
 - name: rebuild nsd3 database
   command: /usr/sbin/nsdc rebuild
 
