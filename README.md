@@ -1,4 +1,4 @@
-NSD role
+# Ansible role for NSD
 
 It is assumed that all machines host the exact same zones in the same way
 (i.e. for each zone, they are either all masters, or all slaves).
@@ -33,3 +33,8 @@ The playbook is currently only tested with Debian wheezy.
 When a master zone is updated, the slaves are notified.  Obviously, the slaves
 need to be configured to accept notification from at least one master and pull
 zones accordingly.
+
+## License
+
+MIT
+
