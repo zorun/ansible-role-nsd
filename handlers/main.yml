@@ -4,14 +4,15 @@
 # nsd MUST rebuild its database before being restarted.  Otherwise, it will
 # fail to start.
 
-- name: rebuild nsd3 database
-  command: /usr/sbin/nsdc rebuild
+- name: rebuild nsd database
+  command: "{{ nsd_control_program }} rebuild"
+  when: nsd_version == 'nsd3'
 
-- name: reload nsd3 database
-  command: /usr/sbin/nsdc reload
+- name: reload nsd database
+  command: "{{ nsd_control_program }} reload"
 
-- name: restart nsd3
-  service: name=nsd3 state=restarted
+- name: restart nsd
+  service: name={{ nsd_service_name }} state=restarted
 
 - name: notify slaves
-  command: /usr/sbin/nsdc notify
+  command: "{{ nsd_control_program }} notify"

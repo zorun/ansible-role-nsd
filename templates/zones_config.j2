@@ -20,7 +20,7 @@ key:
 # Primary zone definition for {{ zone.zone_name }}
 zone:
   name: "{{ zone.zone_name }}"
-  zonefile: "{{ primary_zones_dir }}/{{ zone.zone_filename }}"
+  zonefile: "{{ nsd_primary_zones_dir }}/{{ zone.zone_filename }}"
 {% for slave in zone.slaves|default([]) %}
   notify: {{ slave.ip }} "{{ slave.tsig_key|default('NOKEY') }}"
   provide-xfr: {{ slave.ip }} "{{ slave.tsig_key|default('NOKEY') }}"
@@ -35,7 +35,7 @@ zone:
 # Secondary zone definition for {{ zone.zone_name }}
 zone:
   name: "{{ zone.zone_name }}"
-  zonefile: "{{ secondary_zones_dir }}/{{ zone.zone_name }}"
+  zonefile: "{{ nsd_secondary_zones_dir }}/{{ zone.zone_name }}"
 {% for master in zone.masters|default([]) %}
   allow-notify: {{ master.ip }} "{{ master.tsig_key|default('NOKEY') }}"
   request-xfr: AXFR {{ master.ip }} "{{ master.tsig_key|default('NOKEY') }}"

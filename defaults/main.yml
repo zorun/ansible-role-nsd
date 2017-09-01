@@ -1,0 +1,12 @@
+---
+
+# Default variables, suitable for nsd4 on Debian (jessie or above)
+
+nsd_version: "nsd"
+nsd_service_name: "nsd"
+nsd_pkg_name: "nsd"
+nsd_control_program: "/usr/sbin/nsd-control"
+nsd_config_dir: "/etc/nsd"
+nsd_zones_config_file: "/etc/nsd/zones.conf"
+nsd_primary_zones_dir: "/etc/nsd/primary"
+nsd_secondary_zones_dir: "/etc/nsd/secondary"
