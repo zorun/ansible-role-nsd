@@ -5,7 +5,7 @@
 # definitions for all zones (primary and secondary) and TSIG keys.
 
 ## TSIG keys ##
-{% for key in nsd_tsig_keys|default([]) %}
+{% for key in nsd_tsig_keys %}
 key:
     name: "{{ key.tsig_keyname }}"
     secret: "{{ key.tsig_secret }}"
@@ -16,7 +16,7 @@ key:
 
 ## Primary zones ##
 
-{% for zone in nsd_primary_zones|default([]) %}
+{% for zone in nsd_primary_zones %}
 # Primary zone definition for {{ zone.zone_name }}
 zone:
   name: "{{ zone.zone_name }}"
@@ -31,7 +31,7 @@ zone:
 
 ## Secondary zones ##
 
-{% for zone in nsd_secondary_zones|default([]) %}
+{% for zone in nsd_secondary_zones %}
 # Secondary zone definition for {{ zone.zone_name }}
 zone:
   name: "{{ zone.zone_name }}"
