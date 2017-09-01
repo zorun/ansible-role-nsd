@@ -16,6 +16,7 @@
   notify:
     - rebuild nsd database
     - reload nsd database
+    - restart nsd
 
 - name: Create base nsd configuration file
   template: src=config.j2 dest="{{ nsd_config_dir }}/nsd.conf" owner=root group=root mode=0644 validate='nsd-checkconf %s'
