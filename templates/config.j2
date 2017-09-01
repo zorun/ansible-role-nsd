@@ -13,16 +13,16 @@
 # Do not edit by hand!
 
 server:
-{% if nsd_common_config is defined %}
+{% if nsd_server_config is defined %}
   # Common configuration
-{% for key, value in nsd_common_config.iteritems() -%}
+{% for key, value in nsd_server_config.iteritems() -%}
 {{ expand_list(key, value) }}
 {%- endfor %}
 {% endif %}
 
-{% if nsd_local_config is defined %}
+{% if nsd_local_server_config is defined %}
   # Local configuration
-{% for key, value in nsd_local_config.iteritems() -%}
+{% for key, value in nsd_local_server_config.iteritems() -%}
 {{ expand_list(key, value) }}
 {%- endfor %}
 {% endif %}
