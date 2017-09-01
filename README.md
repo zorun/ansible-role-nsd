@@ -42,7 +42,7 @@ In this setup, there is no need for DNS-based zone transfers.
 
 ### Multi-master with additional slaves not configured by this role
 
-In this setup, one or more master is configured using Ansible, like in the previous
+In this setup, one or more master are configured using Ansible, like in the previous
 use-case.  However, DNS-based zone transfer is also setup, to allow external slaves
 to fetch zone data from a master.  Whenever Ansible updates a zone on the masters,
 it will tell NSD to notify the slaves.
@@ -53,8 +53,8 @@ Note that in this setup, it is your responsibility to configure the slaves appro
 ### Slave only
 
 In this setup, the NSD servers are simply configured as slaves for the zone.
-In this case, no zone data is configured on the servers, because data will be fetched
-from an external master using normal zone transfer mechanisms.
+In this case, no zone data is copied to the servers, because data will be fetched
+from an external master using normal DNS zone transfer mechanisms.
 
 Note that in this setup, it is your responsibility to configure the master appropriately
 (notify the slaves, and allow zone transfers from the slaves).
@@ -74,7 +74,7 @@ of this README for a complete example.
 
 ### Server configuration
 
-    nsd_server_config
+    nsd_server_config [dict]
 
 Dictionary of key-value pairs that will be added to the `server:` configuration
 section of NSD.  A value can be either a string or a list.  In the latter case,
@@ -86,7 +86,7 @@ As a safety net, the role asks NSD to verify the generated configuration before
 proceeding, but this will not be done when running `ansible-playbook --check`.
 
 
-    nsd_local_server_config
+    nsd_local_server_config [dict]
 
 Same syntax and semantic as `nsd_server_config`.
 This second variable is provided so that it's easier to add specific configuration
@@ -95,9 +95,9 @@ or in a playbook, while `nsd_local_server_config` would be defined in `host_vars
 
 ### TSIG keys
 
-    nsd_tsig_keys
+    nsd_tsig_keys [list of dict]
 
-List of TSIG keys.  Each key must be a dictionary with the following attributes:
+Optional list of TSIG keys.  Each TSIG key must be a dictionary with the following attributes:
 
   * `tsig_keyname`: name of this TSIG key.  Note that in a master/slave DNS configuration,
     the name of the TSIG key must be the same on master and slaves!  This name is also
@@ -108,7 +108,7 @@ List of TSIG keys.  Each key must be a dictionary with the following attributes:
 
 ### Primary zones
 
-    nsd_primary_zones
+    nsd_primary_zones [list of dict]
 
 List of zones to be served as master.  Each zone must be a dictionary with the following
 attributes:
@@ -126,7 +126,7 @@ The format for a slave entry is the following:
 
 ### Secondary zones
 
-    nsd_secondary_zones
+    nsd_secondary_zones [list of dict]
 
 List of zones to be served as slave.  Each zone must be a dictionary with the following
 attributes:
