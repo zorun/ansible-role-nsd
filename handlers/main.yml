@@ -6,7 +6,7 @@
 
 - name: rebuild nsd database
   command: "{{ nsd_control_program }} rebuild"
-  when: nsd_version == 'nsd3'
+  when: nsd_version == 3
 
 - name: reload nsd database
   command: "{{ nsd_control_program }} reload"

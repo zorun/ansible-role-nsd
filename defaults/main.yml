@@ -2,7 +2,7 @@
 
 # Default variables, suitable for nsd4 on Debian (jessie or above)
 
-nsd_version: "nsd"
+nsd_version: 4
 nsd_service_name: "nsd"
 nsd_pkg_name: "nsd"
 nsd_control_program: "/usr/sbin/nsd-control"
