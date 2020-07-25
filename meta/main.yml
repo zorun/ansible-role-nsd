@@ -1,12 +1,15 @@
 galaxy_info:
   author: Baptiste Jonglez
-  description: Ansible role to configure NSD on Debian
+  description: Configure NSD and DNS zones on Debian
   license: MIT
   min_ansible_version: 1.7
   platforms:
   - name: Debian
     versions:
-    - all
+    - wheezy
+    - jessie
+    - stretch
+    - buster
   galaxy_tags:
     - nsd
     - dns

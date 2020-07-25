@@ -1,6 +1,7 @@
 # Ansible role for NSD
 
 This Ansible role installs and configure NSD, an authoritative DNS server.
+It also allows to publish DNS zones into NSD.
 
 ## Features
 
@@ -61,11 +62,9 @@ Note that in this setup, it is your responsibility to configure the master appro
 
 ## Requirements
 
-This role has been tested on Debian (wheezy, jessie, stretch), but could be adapted
+This role has been tested on Debian (wheezy, jessie, stretch, buster), but could be adapted
 to work on other systems.  Notably, this role does not setup `nsd-control` because
 this is already done automatically by the Debian package.
-
-By default, NSD4 is assumed, you will need additional configuration for NSD3 (wheezy).
 
 ## Role variables
 
@@ -180,21 +179,6 @@ Directory where the zone files will be copied by this role.
 
 Directory where slave zone files will be placed by NSD after zone transfer.
 
-### Configuration for NSD3
-
-For NSD3 on Debian an appropriate configuration would be:
-
-    nsd_version: 3
-    nsd_service_name: "nsd3"
-    nsd_pkg_name: "nsd3"
-    nsd_control_program: "/usr/sbin/nsdc"
-    nsd_config_dir: "/etc/nsd3"
-    nsd_zones_config_file: "/etc/nsd3/zones.conf"
-    nsd_primary_zones_dir: "/etc/nsd3/primary"
-    nsd_secondary_zones_dir: "/etc/nsd3/secondary"
-
-This could be placed in a `group_vars/wheezy.yml` file or equivalent.
-
 ## Example playbook
 
 This is a complete example playbook with several TSIG keys and several DNS zones:
@@ -252,6 +236,22 @@ the root of your ansible directory:
     $TTL 3h
     @  IN  SOA  ns1 root.example.org. (2017090101 1d 2h 4w 1h)
 
+## Example advanced configuration
+
+If you need more advanced customization, you can use the advanced
+variables.  For instance, to support NSD3 on Debian wheezy, the
+appropriate configuration was:
+
+    nsd_version: 3
+    nsd_service_name: "nsd3"
+    nsd_pkg_name: "nsd3"
+    nsd_control_program: "/usr/sbin/nsdc"
+    nsd_config_dir: "/etc/nsd3"
+    nsd_zones_config_file: "/etc/nsd3/zones.conf"
+    nsd_primary_zones_dir: "/etc/nsd3/primary"
+    nsd_secondary_zones_dir: "/etc/nsd3/secondary"
+
+This could be placed in a `group_vars/wheezy.yml` file or equivalent.
 
 ## Limitations
 
