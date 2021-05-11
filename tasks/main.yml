@@ -1,7 +1,8 @@
 ---
 
 - name: Install nsd
-  apt: pkg={{ nsd_pkg_name }} state=present
+  package:
+    name: "{{ nsd_pkg_name }}"
 
 
 - name: Create primary zone directory
