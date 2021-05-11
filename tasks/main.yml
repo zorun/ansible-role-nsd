@@ -10,16 +10,15 @@
 - name: Create secondary zone directory
   file: path="{{ nsd_secondary_zones_dir }}" state=directory owner=nsd group=nsd mode=0755
 
-
 - name: Configure nsd zones
-  template: src=zones_config.j2 dest="{{ nsd_zones_config_file }}" owner=root group=root mode=0644 validate='nsd-checkconf %s'
+  template: src=zones_config.j2 dest="{{ nsd_zones_config_file }}" owner=root group=root mode=0644
   notify:
     - rebuild nsd database
     - reload nsd database
     - restart nsd
 
 - name: Create base nsd configuration file
-  template: src=config.j2 dest="{{ nsd_config_dir }}/nsd.conf" owner=root group=root mode=0644 validate='nsd-checkconf %s'
+  template: src=config.j2 dest="{{ nsd_config_dir }}/nsd.conf" owner=root group=root mode=0644
   notify:
     - restart nsd
 
