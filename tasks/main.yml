@@ -1,31 +1,31 @@
 ---
 
 - name: Install nsd
-  apt: pkg={{ nsd_pkg_name }} state=present
+  package:
+    name: "{{ nsd_pkg_name }}"
 
 
 - name: Create primary zone directory
-  file: path="{{ nsd_primary_zones_dir }}" state=directory owner=root group=root mode=0755
+  file: path="{{ nsd_primary_zones_dir }}" state=directory owner="{{nsd_user}}" group="{{nsd_group}}" mode=0755
 
 - name: Create secondary zone directory
   file: path="{{ nsd_secondary_zones_dir }}" state=directory owner=nsd group=nsd mode=0755
 
-
 - name: Configure nsd zones
-  template: src=zones_config.j2 dest="{{ nsd_zones_config_file }}" owner=root group=root mode=0644 validate='nsd-checkconf %s'
+  template: src=zones_config.j2 dest="{{ nsd_zones_config_file }}" owner="{{nsd_user}}" owner="{{nsd_group}}" mode=0644
   notify:
     - rebuild nsd database
     - reload nsd database
     - restart nsd
 
 - name: Create base nsd configuration file
-  template: src=config.j2 dest="{{ nsd_config_dir }}/nsd.conf" owner=root group=root mode=0644 validate='nsd-checkconf %s'
+  template: src=config.j2 dest="{{ nsd_config_dir }}/nsd.conf" owner="{{nsd_user}}" owner="{{nsd_group}}" mode=0644
   notify:
     - restart nsd
 
 
 - name: Copy content of primary zones
-  copy: src="files/nsd/{{ item.zone_filename }}" dest="{{ nsd_primary_zones_dir }}/{{ item.zone_filename }}" owner=root group=root mode=0644
+  copy: src="files/nsd/{{ item.zone_filename }}" dest="{{ nsd_primary_zones_dir }}/{{ item.zone_filename }}" owner="{{nsd_user}}" owner="{{nsd_group}}" mode=0644
   with_items: "{{ nsd_primary_zones }}"
   notify:
     - rebuild nsd database

@@ -25,6 +25,9 @@ zone:
   notify: {{ slave.ip }} "{{ slave.tsig_key|default('NOKEY') }}"
   provide-xfr: {{ slave.ip }} "{{ slave.tsig_key|default('NOKEY') }}"
 {% endfor %}
+{% if zone.include_pattern|default(false) %}
+  include-pattern: {{zone.include_pattern}}
+{% endif %}
 
 {% endfor %}
 
@@ -40,5 +43,8 @@ zone:
   allow-notify: {{ master.ip }} "{{ master.tsig_key|default('NOKEY') }}"
   request-xfr: AXFR {{ master.ip }} "{{ master.tsig_key|default('NOKEY') }}"
 {% endfor %}
+{% if zone.include_pattern|default(false) %}
+  include-pattern: {{zone.include_pattern}}
+{% endif %}
 
 {% endfor %}
