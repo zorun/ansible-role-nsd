@@ -3,6 +3,10 @@
 This Ansible role installs and configure NSD, an authoritative DNS server.
 It also allows to publish DNS zones into NSD.
 
+## Installation
+
+This role is available on [Ansible Galaxy](https://galaxy.ansible.com/zorun/nsd)
+
 ## Features
 
 This role supports both NSD3 and NSD4, allows to manage both NSD configuration
