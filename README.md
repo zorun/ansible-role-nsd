@@ -19,6 +19,7 @@ it has the following features:
 
 - allows to store zone data in "classical" zone files, instead of having to write
   zones as ansible variables like [here](https://github.com/reallyenglish/ansible-role-nsd)
+- also allow zone data Jinja, in case you need something more dynamic
 - supports both master and slave scenarios, or even a mixture of both
   (some zones running as master and some zones running as slave, on the same
   NSD server)
