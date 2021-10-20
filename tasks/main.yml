@@ -46,7 +46,7 @@
 
 - name: Copy content of primary zones
   template:
-    src: "files/nsd/{{ item.zone_filename }}"
+    src: "{{ nsd_local_zones_dir }}/{{ item.zone_filename }}"
     dest: "{{ nsd_primary_zones_dir }}/{{ item.zone_filename }}"
     owner: root
     group: root
