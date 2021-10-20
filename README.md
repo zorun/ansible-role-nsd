@@ -144,6 +144,28 @@ The format for a master entry is the following:
   * `tsig_key`: name of the TSIG key to use when communicating with this master.  The name
     must match the `tsig_keyname` field of a previously-defined TSIG key, see above.  **Optional**.
 
+### Remote control
+
+    nsd_remote_control_config [dict]
+
+and
+
+    nsd_local_remote_control_config [dict]
+
+are used to configure the remote-control section. They are empty by default i.e. no remote
+control options are configured.
+
+### Pattern
+
+    nsd_pattern_config [list of dicts]
+
+and
+
+    nsd_local_pattern_config [list of dicts]
+
+are used to create pattern. Provide a list of dicts. Each pattern must at least contain the
+`name` key. Zones may include pattern with the key `include_pattern`.
+
 ### Advanced configuration variables
 
 These variables should not need to be changed in most cases.

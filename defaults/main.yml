@@ -6,6 +6,8 @@ nsd_tsig_keys: []
 
 # Default variables, suitable for nsd4 on Debian (jessie or above)
 
+nsd_user: root
+nsd_group: root
 nsd_version: 4
 nsd_service_name: "nsd"
 nsd_pkg_name: "nsd"
