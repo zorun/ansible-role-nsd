@@ -1,5 +1,4 @@
 ---
-
 - name: Install nsd
   package:
     name: "{{ nsd_pkg_name }}"
@@ -20,7 +19,6 @@
     owner: nsd
     group: nsd
     mode: "0755"
-
 
 - name: Configure nsd zones
   template:
@@ -45,7 +43,6 @@
   validate: 'nsd-checkconf %s'
   notify:
     - restart nsd
-
 
 - name: Copy content of primary zones
   copy: 
