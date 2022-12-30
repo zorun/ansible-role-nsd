@@ -3,6 +3,7 @@
 nsd_primary_zones: []
 nsd_secondary_zones: []
 nsd_tsig_keys: []
+nsd_local_zones_dir: files/nsd/
 
 # Default variables, suitable for nsd4 on Debian (jessie or above)
 
