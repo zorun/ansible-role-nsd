@@ -35,12 +35,12 @@
 
 - name: Create base nsd configuration file
   template:
-  src: config.j2
-  dest: "{{ nsd_config_dir }}/nsd.conf"
-  owner: root
-  group: root
-  mode: "0644"
-  validate: 'nsd-checkconf %s'
+    src: config.j2
+    dest: "{{ nsd_config_dir }}/nsd.conf"
+    owner: root
+    group: root
+    mode: "0644"
+    validate: 'nsd-checkconf %s'
   notify:
     - restart nsd
 
