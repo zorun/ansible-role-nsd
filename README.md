@@ -67,9 +67,12 @@ Note that in this setup, it is your responsibility to configure the master appro
 
 ## Requirements
 
-This role has been tested on Debian (wheezy, jessie, stretch, buster), but could be adapted
-to work on other systems.  Notably, this role does not setup `nsd-control` because
-this is already done automatically by the Debian package.
+This role has been tested on Debian (wheezy, jessie, stretch, buster, bullseye).
+It could possibly work on other systems with some adaptations, patches welcome.
+
+This role does not setup `nsd-control` because this is already done automatically
+by the Debian package.  Other systems might need setting it up through Ansible
+instead.
 
 ## Role variables
 
