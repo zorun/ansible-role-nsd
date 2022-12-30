@@ -26,7 +26,7 @@
     dest: "{{ nsd_zones_config_file }}"
     owner: root
     group: root
-    mode: 0644
+    mode: "0644"
     validate: 'nsd-checkconf %s'
   notify:
     - rebuild nsd database
