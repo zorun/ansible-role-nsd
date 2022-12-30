@@ -19,7 +19,7 @@ it has the following features:
 
 - allows to store zone data in "classical" zone files, instead of having to write
   zones as ansible variables like [here](https://github.com/reallyenglish/ansible-role-nsd)
-- also allow zone data Jinja, in case you need something more dynamic
+- zone files are parsed as Jinja templates, in case you need something dynamic
 - supports both master and slave scenarios, or even a mixture of both
   (some zones running as master and some zones running as slave, on the same
   NSD server)
@@ -150,6 +150,11 @@ The format for a master entry is the following:
 These variables should not need to be changed in most cases.
 Variables are presented here with their default value.
 
+    nsd_local_zones_dir: files/nsd/
+
+Local directory in which to look for zone files (`zone_filename` entries
+are relative to this directory).
+
     nsd_version: 4
 
 The version of NSD.  Used to skip tasks or handlers that do not make
@@ -161,7 +166,7 @@ The name of the init service, used to restart NSD.
 
     nsd_pkg_name: "nsd"
 
-Name of the Debian package to install.
+Name of the package to install.
 
     nsd_control_program: "/usr/sbin/nsd-control"
 
@@ -231,8 +236,9 @@ Also in `host_vars/ns1.yml`:
     nsd_local_server_config:
       ip-address: ['2001:db8:ffff::42', '203.0.113.199']
 
-The zone data for the two primary zones needs to be stored in `files/nsd/` at
-the root of your ansible directory:
+The zone data for the two primary zones needs to be stored in
+`nsd_local_zones_dir` (which defaults to `files/nsd/` at the root of your
+ansible directory):
 
     # ls files/nsd/
     example.org.zone   example.com.zone
@@ -240,6 +246,8 @@ the root of your ansible directory:
     $ORIGIN example.org
     $TTL 3h
     @  IN  SOA  ns1 root.example.org. (2017090101 1d 2h 4w 1h)
+
+You can use Jinja templating in your zone files to generate dynamic records.
 
 ## Example advanced configuration
 
@@ -266,16 +274,14 @@ This greatly simplifies configuration, and there is generally no need
 to have masters and slaves for the same zone handled by Ansible, since
 Ansible can just push the zone data to all servers (so, they can all be masters).
 
+You could workaround this limitation by simply calling this role multiple times
+with different machines and different configuration.
+
 There are cases where having multiple masters whose zone is pushed by Ansible
 would probably not be desirable:
 
 - dynamic DNS records (which isn't supported by NSD anyway)
-- DNSSEC (you could always generate DNSSEC signatures in ansible, but it's awkward)
-
-Thus, these use-cases are not supported.
-
-Of course, you can workaround this limitation by simply calling this role multiple
-times with different machines and different configuration.
+- DNSSEC (I have no experience with DNSSEC, contributions welcome)
 
 ## License
 
